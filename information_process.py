@@ -1,7 +1,7 @@
 """
 Calculate the information in the network
-Can be by the full distribution rule (for small netowrk) or bt different approximation method
 """
+
 from multiprocessing import cpu_count
 from joblib import Parallel, delayed
 
@@ -74,7 +74,7 @@ def calc_information_for_epoch(epoch_number, ws_epoch, bins, unique_inverse_x,
         information_epoch.append(information_epoch_layer)
     information_epoch = np.array(information_epoch)
 
-    print('Processed epoch {}'.format(epoch_number))
+    # print('Processed epoch {}'.format(epoch_number))
 
     return information_epoch
 
@@ -91,14 +91,6 @@ def extract_probs(label, x):
 
     pxs = unique_x_counts / np.sum(unique_x_counts)
 
-    # pys_given_x = []
-    # for i in range(0, len(unique_x)):
-    #     indexs = unique_inverse_x == i
-    #     py_x_current = np.mean(label[indexs, :], axis=0)
-    #     pys_given_x.append(py_x_current)
-    #
-    # pys_given_x = np.array(pys_given_x)
-
     unique_array_y, unique_y_indices, unique_inverse_y, unique_y_counts = np.unique(
         label, axis=0,
         return_index=True, return_inverse=True, return_counts=True
@@ -112,10 +104,10 @@ def get_information(ws, x, label, num_of_bins, every_n=1,
     Calculate the information for the network for all the epochs and all the layers
 
     ws.shape =  [n_epoch, n_layers, n_params]
-    ws --- outputs of all layers for all ephocs
+    ws --- outputs of all layers for all epochs
     """
 
-    print('Start calculating the information...')
+    # print('Start calculating the information...')
 
     bins = np.linspace(-1, 1, num_of_bins)
     label = np.array(label).astype(np.float)
@@ -140,10 +132,3 @@ def get_information(ws, x, label, num_of_bins, every_n=1,
             ity_matrix[epoch][layer] = info['local_ITY']
 
     return ixt_matrix, ity_matrix
-
-    # information_total = []
-    # for i, epoch_output in enumerate(ws):
-    #     information_total.append(
-    #         calc_information_for_epoch(i, epoch_output, bins, unique_inverse_x, unique_inverse_y, pxs, pys))
-    #
-    # return information_total
